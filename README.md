@@ -2,7 +2,7 @@
 A collection of universal Roblox scripts.
 # Scripts
 ## Device Spoofer
-### Script
+### Script:
 ```
 loadstring(game:HttpGet("https://raw.githubusercontent.com/QilexCrown/Universal.Scripts/refs/heads/main/Device%20Spoofer"))()
 ```
