@@ -32,7 +32,7 @@ Execute the loadstring first
 
 Then use setDevice() with your preferred device
 
-Works in most Roblox games that have device detection
+Dosent Work on alot of Games 
 
 
 
