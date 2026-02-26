@@ -1,0 +1,50 @@
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local SetControlsRemote = ReplicatedStorage:WaitForChild("Remotes"):WaitForChild("Replication"):WaitForChild("Fighter"):WaitForChild("SetControls")
+
+local function setDevice(device)
+    local input = string.lower(tostring(device))
+    
+    local deviceMap = {
+        ["pc"] = "MouseKeyboard",
+        ["mousekeyboard"] = "MouseKeyboard",
+        ["mouse"] = "MouseKeyboard",
+        ["keyboard"] = "MouseKeyboard",
+        ["desktop"] = "MouseKeyboard",
+        ["computer"] = "MouseKeyboard",
+        
+        ["controller"] = "Gamepad",
+        ["gamepad"] = "Gamepad",
+        ["xbox"] = "Gamepad",
+        ["playstation"] = "Gamepad",
+        ["ps"] = "Gamepad",
+        ["controller"] = "Gamepad",
+        
+        ["mobile"] = "Touch",
+        ["phone"] = "Touch",
+        ["touch"] = "Touch",
+        ["android"] = "Touch",
+        ["iphone"] = "Touch",
+        ["ios"] = "Touch",
+        ["tablet"] = "Touch",
+        ["ipad"] = "Touch",
+        
+        ["vr"] = "VR",
+        ["virtualreality"] = "VR",
+        ["oculus"] = "VR",
+        ["quest"] = "VR",
+        ["vive"] = "VR"
+    }
+    
+    local mappedDevice = deviceMap[input]
+    if mappedDevice then
+        device = mappedDevice
+    end
+    
+    pcall(function()
+        SetControlsRemote:FireServer("MouseKeyboard")
+        task.wait(0.3)
+        SetControlsRemote:FireServer(device)
+    end)
+end
+
+getgenv().setDevice = setDevice
