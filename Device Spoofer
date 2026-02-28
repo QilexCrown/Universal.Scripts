@@ -19,7 +19,6 @@ local function setDevice(device)
         ["xbox"] = "Gamepad",
         ["playstation"] = "Gamepad",
         ["ps"] = "Gamepad",
-        ["controller"] = "Gamepad",
         
         ["mobile"] = "Touch",
         ["phone"] = "Touch",
@@ -55,14 +54,34 @@ getgenv().setDevice = setDevice
 local queueteleport = (syn and syn.queue_on_teleport) or queue_on_teleport or (fluxus and fluxus.queue_on_teleport)
 
 if queueteleport then
-    queueteleport('loadstring(game:HttpGet("https://raw.githubusercontent.com/QilexCrown/Universal.Scripts/refs/heads/main/Device%20Spoofer"))() setDevice(getgenv().DeviceSpooferDevice)')
+    queueteleport([[
+getgenv().DeviceSpooferDevice = getgenv().DeviceSpooferDevice or "controller"
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local SetControlsRemote = ReplicatedStorage:WaitForChild("Remotes"):WaitForChild("Replication"):WaitForChild("Fighter"):WaitForChild("SetControls")
+
+local function setDevice(device)
+    local input = string.lower(tostring(device))
+    local deviceMap = {
+        ["pc"] = "MouseKeyboard", ["mousekeyboard"] = "MouseKeyboard", ["mouse"] = "MouseKeyboard", ["keyboard"] = "MouseKeyboard", ["desktop"] = "MouseKeyboard", ["computer"] = "MouseKeyboard",
+        ["controller"] = "Gamepad", ["gamepad"] = "Gamepad", ["xbox"] = "Gamepad", ["playstation"] = "Gamepad", ["ps"] = "Gamepad",
+        ["mobile"] = "Touch", ["phone"] = "Touch", ["touch"] = "Touch", ["android"] = "Touch", ["iphone"] = "Touch", ["ios"] = "Touch", ["tablet"] = "Touch", ["ipad"] = "Touch",
+        ["vr"] = "VR", ["virtualreality"] = "VR", ["oculus"] = "VR", ["quest"] = "VR", ["vive"] = "VR"
+    }
+    local mappedDevice = deviceMap[input]
+    if mappedDevice then
+        device = mappedDevice
+        getgenv().DeviceSpooferDevice = input
+    end
+    pcall(function()
+        SetControlsRemote:FireServer("MouseKeyboard")
+        task.wait(0.3)
+        SetControlsRemote:FireServer(device)
+    end)
+end
+
+getgenv().setDevice = setDevice
+setDevice(getgenv().DeviceSpooferDevice)
+    ]])
 end
 
 setDevice(getgenv().DeviceSpooferDevice)
-
-local connection
-connection = game:GetService("RunService").RenderStepped:Connect(function()
-    if not getgenv().DeviceSpooferDevice then
-        getgenv().DeviceSpooferDevice = "controller"
-    end
-end)
