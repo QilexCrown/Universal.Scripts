@@ -1,6 +1,8 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local SetControlsRemote = ReplicatedStorage:WaitForChild("Remotes"):WaitForChild("Replication"):WaitForChild("Fighter"):WaitForChild("SetControls")
 
+getgenv().DeviceSpooferDevice = getgenv().DeviceSpooferDevice or "controller"
+
 local function setDevice(device)
     local input = string.lower(tostring(device))
     
@@ -38,6 +40,7 @@ local function setDevice(device)
     local mappedDevice = deviceMap[input]
     if mappedDevice then
         device = mappedDevice
+        getgenv().DeviceSpooferDevice = input
     end
     
     pcall(function()
@@ -48,3 +51,18 @@ local function setDevice(device)
 end
 
 getgenv().setDevice = setDevice
+
+local queueteleport = (syn and syn.queue_on_teleport) or queue_on_teleport or (fluxus and fluxus.queue_on_teleport)
+
+if queueteleport then
+    queueteleport('loadstring(game:HttpGet("https://raw.githubusercontent.com/QilexCrown/Universal.Scripts/refs/heads/main/Device%20Spoofer"))() setDevice(getgenv().DeviceSpooferDevice)')
+end
+
+setDevice(getgenv().DeviceSpooferDevice)
+
+local connection
+connection = game:GetService("RunService").RenderStepped:Connect(function()
+    if not getgenv().DeviceSpooferDevice then
+        getgenv().DeviceSpooferDevice = "controller"
+    end
+end)
