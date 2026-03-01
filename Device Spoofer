@@ -1,3 +1,4 @@
+-- By Qilex
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local SetControlsRemote = ReplicatedStorage:WaitForChild("Remotes"):WaitForChild("Replication"):WaitForChild("Fighter"):WaitForChild("SetControls")
 
